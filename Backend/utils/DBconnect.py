@@ -8,7 +8,7 @@ class DBconnect:
         self.__host = "localhost"
         self.__user = "root"
         self.__password = "duy732003"
-        self.__database = "library"
+        self.__database = "todolist"
 
         self.__conn = mysql.connector.connect(
             host=self.__host,
@@ -17,7 +17,7 @@ class DBconnect:
             database=self.__database)
 
 
-    def executeVoidQuery(self, query):
+    def execute_void_query(self, query, params):
         """
         Dùng cho INSERT/UPDATE/DELETE/DDL.
         Tự commit; rollback nếu lỗi.
@@ -25,7 +25,7 @@ class DBconnect:
         """
         cur = self.__conn.cursor()
         try:
-            cur.execute(query)
+            cur.execute(query, params)
             self.__conn.commit()
             # last_row_id chỉ có ý nghĩa với INSERT có AUTO_INCREMENT
             return {"row_count": cur.rowcount, "last_row_id": cur.lastrowid}
@@ -36,14 +36,14 @@ class DBconnect:
             cur.close()
 
 
-    def executeReturnQuery(self, query):
+    def execute_return_query(self, query, params):
         """
         Dùng cho SELECT.
         Trả về list các dict (mỗi dict là một dòng, key = tên cột).
         """
         cur = self.__conn.cursor(dictionary=True)
         try:
-            cur.execute(query)
+            cur.execute(query, params)
             rows = cur.fetchall()
             return rows
         finally:
