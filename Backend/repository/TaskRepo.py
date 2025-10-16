@@ -1,3 +1,4 @@
+from Backend.models.Task import Task
 from Backend.utils.DBconnect import DBconnect
 
 class TaskRepo:
@@ -21,4 +22,17 @@ class TaskRepo:
               """
 
         return self.__db.execute_return_query(sql, (task_id,))
+
+
+    def create_task(self, task: Task):
+        sql = """
+              insert into task (id, description, is_done, is_deleted) values 
+                  (%s, %s, %s, %s)
+              """
+
+        return self.__db.execute_void_query(sql,
+                                            (task.id,
+                                             task.description,
+                                             task.is_done,
+                                             task.is_deleted))
 
