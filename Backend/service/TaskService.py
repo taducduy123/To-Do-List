@@ -16,3 +16,15 @@ class TaskService:
         return {"id" : f"{task.id}"}
 
 
+    def update_task(self, task: Task):
+        self.__taskRepo.update_task(task)
+        return {"id" : f"{task.id}"}
+
+
+    def delete_task_by_id(self, id: int):
+        self.__taskRepo.delete_task_by_id(id)
+        return {"id" : f"{id}"}
+
+
+    def search_task_by_description(self, description: str):
+        return self.__taskRepo.search_task_by_description(description)

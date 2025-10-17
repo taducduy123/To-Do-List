@@ -1,3 +1,5 @@
+from typing import Dict, Any
+
 from fastapi import APIRouter
 from Backend.models.Task import Task
 from Backend.service.TaskService import TaskService
@@ -9,19 +11,27 @@ taskService = TaskService()
 router = APIRouter()
 
 
-@router.post("/api/tasks")
+@router.post("/api/task")
 def create_task(task: Task):
     return taskService.create_task(task)
 
 
-@router.get("/api/tasks")
+@router.get("/api/task")
 def retrieve_tasks():
     return taskService.get_all_task()
 
 
-@router.put("/api/tasks/{task_id}")
-def edit_task():
-    print("put is running")
+@router.put("/api/task")
+def update_task(task: Task):
+    return taskService.update_task(task)
 
 
+@router.delete("/api/task")
+def delete_task(id: int):
+    return taskService.delete_task_by_id(id)
+
+
+@router.get("/api/task-search")
+def search_task_by_description(keyword: str):
+    return taskService.search_task_by_description(keyword)
 
