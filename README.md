@@ -13,6 +13,7 @@
    - Tools: Pycharm, Postman
 # System Architechture Diagram
 # Project Structure
+```
 ├── Backend
 │   ├── APIs
 │   │   └── TaskAPI.py
@@ -30,7 +31,8 @@
 ├── Dockerfile
 ├── main.py
 ├── README.md
-├── requirements.txt
+└── requirements.txt
+```
 # Setup & Installation (How to run my code):
    - First, please install fastAPI (pip install fastapi), uvicorn (pip install uvicorn), and MySQL beforehand
    - Second, you must set up your database (MySQL) beforehand. To do that:
