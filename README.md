@@ -20,6 +20,19 @@
      2. Go folder Database -> run DDL.sql and DML.sql to create the database
    - At last, to run code, type the following command in your terminal: uvicorn main:app --reload
 7. API Endpoints
-8. Screenshots / Demo
-9. Acceptance Criteria
+   <table>
+  <thead>
+    <tr>
+      <th style="text-align:right">Method</th>
+      <th>Path</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td style="text-align:right">GET</td><td><code>http://127.0.0.1:8000/api/tasks</code></td><td>Retrieve all tasks</td></tr>
+    <tr><td style="text-align:right">POST</td><td><code>http://127.0.0.1:8000/api/tasks</code></td><td>Create a new task</td></tr>
+  </tbody>
+</table>
+9. Screenshots / Demo
+10. Acceptance Criteria
 
