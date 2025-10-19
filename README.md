@@ -16,7 +16,7 @@
 # Setup & Installation (How to run my code):
    - First, please install fastAPI (pip install fastapi), uvicorn (pip install uvicorn), and MySQL beforehand
    - Second, you must set up your database (MySQL) beforehand. To do that:
-     1. Go Backend/utils/DBconnect.py -> look for line 8-10 -> then enter your username and password (MySQL) here
+     1. Go Backend/utils/DBconnect.py -> look for line 8-10 -> then enter your username and password (MySQL)
      2. Go folder Database -> run DDL.sql and DML.sql to create the database
    - Finally, to run code, type the following command in your terminal: uvicorn main:app --reload
 # API Endpoints
