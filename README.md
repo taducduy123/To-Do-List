@@ -29,13 +29,14 @@
     </tr>
   </thead>
   <tbody>
-    <tr><td style="text-align:right">POST</td><td><code>http://127.0.0.1:8000/api/tasks</code></td><td>Create a new task</td></tr>
-    <tr><td style="text-align:right">GET</td><td><code>http://127.0.0.1:8000/api/tasks</code></td><td>Retrieve all tasks</td></tr>
-     <tr><td style="text-align:right">PUT</td><td><code>http://127.0.0.1:8000/api/tasks</code></td><td>Update a task</td></tr>
-     <tr><td style="text-align:right">DELETE</td><td><code>http://127.0.0.1:8000/api/tasks?id=</code></td><td>Delete a task by id</td></tr>
+    <tr><td style="text-align:right">POST</td><td><code>http://127.0.0.1:8000/api/task</code></td><td>Create a new task</td></tr>
+    <tr><td style="text-align:right">GET</td><td><code>http://127.0.0.1:8000/api/task</code></td><td>Retrieve all tasks</td></tr>
+     <tr><td style="text-align:right">PUT</td><td><code>http://127.0.0.1:8000/api/task</code></td><td>Update a task</td></tr>
+     <tr><td style="text-align:right">DELETE</td><td><code>http://127.0.0.1:8000/api/task?id=</code></td><td>Delete a task by id</td></tr>
      <tr><td style="text-align:right">GET</td><td><code>http://127.0.0.1:8000/api/tasks-search?keyword=</code></td><td>Search tasks by name</td></tr>
   </tbody>
 </table>
-9. Screenshots / Demo
-10. Acceptance Criteria
+
+8. Screenshots / Demo
+9. Acceptance Criteria
 
