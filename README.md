@@ -14,11 +14,11 @@
 4. System Architechture Diagram
 5. Project Structure
 6. Setup & Installation (How to run my code):
-   - First, please install fastAPI (pip install fastapi) and uvicorn (pip install uvicorn) beforehand
+   - First, please install fastAPI (pip install fastapi), uvicorn (pip install uvicorn), and MySQL beforehand
    - Second, you must set up your database (MySQL) beforehand. To do that:
      1. Go Backend/utils/DBconnect.py -> look for line 8-10 -> then enter your username and password (MySQL) here
      2. Go folder Database -> run DDL.sql and DML.sql to create the database
-   - At last, to run code, type the following command in your terminal: uvicorn main:app --reload
+   - Finally, to run code, type the following command in your terminal: uvicorn main:app --reload
 7. API Endpoints
    <table>
   <thead>
@@ -33,10 +33,9 @@
     <tr><td style="text-align:right">GET</td><td><code>http://127.0.0.1:8000/api/task</code></td><td>Retrieve all tasks</td></tr>
      <tr><td style="text-align:right">PUT</td><td><code>http://127.0.0.1:8000/api/task</code></td><td>Update a task</td></tr>
      <tr><td style="text-align:right">DELETE</td><td><code>http://127.0.0.1:8000/api/task?id=</code></td><td>Delete a task by id</td></tr>
-     <tr><td style="text-align:right">GET</td><td><code>http://127.0.0.1:8000/api/tasks-search?keyword=</code></td><td>Search tasks by name</td></tr>
+     <tr><td style="text-align:right">GET</td><td><code>http://127.0.0.1:8000/api/task-search?keyword=</code></td><td>Search tasks by name</td></tr>
   </tbody>
 </table>
-
 
 
 8. Screenshots / Demo
