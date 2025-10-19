@@ -11,6 +11,8 @@ taskService = TaskService()
 router = APIRouter()
 
 
+count = 0
+
 @router.post("/api/task")
 def create_task(task: Task):
     return taskService.create_task(task)
@@ -18,6 +20,9 @@ def create_task(task: Task):
 
 @router.get("/api/task")
 def retrieve_tasks():
+    global count
+    count = count + 1
+    print(count)
     return taskService.get_all_task()
 
 
