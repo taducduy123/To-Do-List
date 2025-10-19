@@ -14,7 +14,8 @@ class DBconnect:
             host=self.__host,
             user=self.__user,
             password=self.__password,
-            database=self.__database)
+            database=self.__database,
+            port=3306)
 
 
     def execute_void_query(self, query, params):
