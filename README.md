@@ -36,5 +36,5 @@
      <tr><td style="text-align:right">GET</td><td><code>http://127.0.0.1:8000/api/task-search?keyword=</code></td><td>Search tasks by name</td></tr>
   </tbody>
 </table>
-8. Screenshots / Demo
+8. Screenshots/Demo
 9. Acceptance Criteria
