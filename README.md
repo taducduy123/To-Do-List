@@ -12,6 +12,12 @@
    - Database: MySQL
    - Tools: Pycharm, Postman
 # System Architechture Diagram
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/88221afb-f7fa-42a2-b337-4f9490e6c02e"
+       alt="architecture"
+       width="340" />
+</p>
+
 # Project Structure
 ```
 ├── Backend
