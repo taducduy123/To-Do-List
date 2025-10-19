@@ -10,9 +10,35 @@
    - Backend: fastAPI
    - Fronend: Reactjs
    - Database: MySQL
-   - Tools: Pycharm, Postman
+   - Tools: Pycharm, Postman, MySQL Workbench
 # System Architechture Diagram
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/88221afb-f7fa-42a2-b337-4f9490e6c02e"
+       alt="architecture"
+       width="340" />
+</p>
+
 # Project Structure
+```
+├── Backend
+│   ├── APIs
+│   │   └── TaskAPI.py
+│   ├── models
+│   │   └── Task.py
+│   ├── repository
+│   │   └── TaskRepo.py
+│   ├── service
+│   │   └── TaskService.py
+│   └── utils
+│       └── DBconnect.py
+├── Database
+│   ├── DDL.sql
+│   └── DML.sql
+├── Dockerfile
+├── main.py
+├── README.md
+└── requirements.txt
+```
 # Setup & Installation (How to run my code):
    - First, please install fastAPI (pip install fastapi), uvicorn (pip install uvicorn), and MySQL beforehand
    - Second, you must set up your database (MySQL) beforehand. To do that:
