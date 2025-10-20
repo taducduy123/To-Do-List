@@ -1,4 +1,4 @@
-from Backend.models.Task import Task
+from Backend.models.Task import Task, TaskCreate
 from Backend.utils.DBconnect import DBconnect
 
 
@@ -22,17 +22,14 @@ class TaskRepo:
 
         return self.__db.execute_return_query(sql, (task_id,))
 
-    def create_task(self, task: Task):
+    def create_task(self, task: TaskCreate):
         sql = """
-              insert into task (id, description, is_done, is_deleted)
-              values (%s, %s, %s, %s)
+              insert into task (description, is_done, is_deleted)
+              values (%s, false, false)
               """
 
         return self.__db.execute_void_query(sql,
-                                            (task.id,
-                                             task.description,
-                                             task.is_done,
-                                             task.is_deleted))
+                                            (task.description,))
 
     def update_task(self, task: Task):
         sql = """
