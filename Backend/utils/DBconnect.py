@@ -5,7 +5,7 @@ class DBconnect:
         """
         Các thông tin sau nên được cất giấu vào một file khác
         """
-        self.__host = "localhost"
+        self.__host = "localhost" #ipconfig
         self.__user = "root"
         self.__password = "duy732003"
         self.__database = "todolist"

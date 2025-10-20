@@ -52,8 +52,8 @@ class TaskRepo:
 
     def delete_task_by_id(self, id: int):
         sql = """
-        delete 
-        from task
+        update task 
+        set is_deleted = true
         where id = %s;
         """
 
