@@ -15,7 +15,8 @@ function FetchData(){
     console.log(records)
 
     return (
-        // continue here
+        <>
+        </>
     )
 }
 

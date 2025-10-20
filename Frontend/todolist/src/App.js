@@ -1,13 +1,15 @@
 import React, {useState, useEffect} from "react"
 import api from './api'
+import {TaskCRUD} from "./components/TaskCRUD";
 
 
 const App = () => {
-    const [transactions, setTransactions] = useState([]);
-    const [formData, setFormData] = useState({});
+
 
     return (
         <>
+
+            <TaskCRUD/>
             {/*<div className="min-vh-100 d-flex justify-content-center align-items-center bg-light">*/}
             {/*    <div className="card shadow w-100" style={{maxWidth: 900}}>*/}
             {/*        <div className="card-header bg-primary text-white">*/}
