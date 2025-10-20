@@ -11,3 +11,9 @@ class TaskCreate(BaseModel):
     description: str
 
 
+class TaskUpdate(BaseModel):
+    id: int
+    description: str
+    is_done: bool
+
+

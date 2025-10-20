@@ -1,7 +1,7 @@
 from typing import Dict, Any
 
 from fastapi import APIRouter
-from Backend.models.Task import Task, TaskCreate
+from Backend.models.Task import Task, TaskCreate, TaskUpdate
 from Backend.service.TaskService import TaskService
 
 
@@ -27,7 +27,7 @@ def retrieve_tasks():
 
 
 @router.put("/api/task")
-def update_task(task: Task):
+def update_task(task: TaskUpdate):
     return taskService.update_task(task)
 
 

@@ -1,4 +1,4 @@
-from Backend.models.Task import Task, TaskCreate
+from Backend.models.Task import Task, TaskCreate, TaskUpdate
 from Backend.utils.DBconnect import DBconnect
 
 
@@ -31,19 +31,17 @@ class TaskRepo:
         return self.__db.execute_void_query(sql,
                                             (task.description,))
 
-    def update_task(self, task: Task):
+    def update_task(self, task: TaskUpdate):
         sql = """
               update task
               set description = %s,
-                  is_done     = %s,
-                  is_deleted  = %s
+                  is_done     = %s
               where id = %s;
               """
 
         return self.__db.execute_void_query(sql,
                                             (task.description,
                                              task.is_done,
-                                             task.is_deleted,
                                              task.id))
 
 

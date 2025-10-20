@@ -1,6 +1,9 @@
 import React, {useState, useEffect} from "react";
 
 export function TaskCRUD() {
+    const timeout_alert = 9000;
+
+
     const [records, setRecords] = useState([]);
     const [keyword, setKeyword] = useState("");
 
@@ -9,8 +12,13 @@ export function TaskCRUD() {
     const [newDesc, setNewDesc] = useState("");
     const [creating, setCreating] = useState(false);
 
-    // success message
+    // success message (tạo mới / chỉnh sửa)
     const [successMsg, setSuccessMsg] = useState("");
+
+    // popup edit
+    const [showEdit, setShowEdit] = useState(false);
+    const [editForm, setEditForm] = useState({ id: null, description: "", is_done: 0 });
+    const [saving, setSaving] = useState(false);
 
     // load all
     const loadAll = () => {
@@ -44,7 +52,7 @@ export function TaskCRUD() {
             .catch(err => alert("Xóa thất bại: " + err.message));
     };
 
-    // CREATE -> POST { description }, show success (bên dưới bảng)
+    // CREATE -> POST { description }, show success (dưới bảng)
     const handleCreateSubmit = async (e) => {
         e.preventDefault();
         const desc = newDesc.trim();
@@ -62,13 +70,54 @@ export function TaskCRUD() {
             setShowCreate(false);
             loadAll();
 
-            // Hiển thị thông báo dưới bảng
             setSuccessMsg("Tạo mới thành công");
-            setTimeout(() => setSuccessMsg(""), 3000);
+            setTimeout(() => setSuccessMsg(""), timeout_alert);
         } catch (err) {
             alert("Tạo task thất bại: " + err.message);
         } finally {
             setCreating(false);
+        }
+    };
+
+    // OPEN EDIT modal
+    const openEdit = (task) => {
+        setEditForm({
+            id: task.id,
+            description: task.description ?? "",
+            is_done: Number(task.is_done) ? 1 : 0,
+        });
+        setShowEdit(true);
+    };
+
+    // SAVE EDIT -> PUT { id, description, is_done } + show "Chỉnh sửa thành công"
+    const handleEditSave = async (e) => {
+        e.preventDefault();
+        try {
+            setSaving(true);
+            const payload = {
+                id: editForm.id,
+                description: editForm.description.trim(),
+                is_done: Number(editForm.is_done),
+            };
+            if (!payload.description) throw new Error("Description không được để trống");
+
+            const res = await fetch("http://127.0.0.1:8000/api/task", {
+                method: "PUT",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(payload),
+            });
+            if (!res.ok) throw new Error(`HTTP ${res.status}`);
+
+            setShowEdit(false);
+            loadAll();
+
+            // >>> Hiện thông báo dưới danh sách task
+            setSuccessMsg("Chỉnh sửa thành công");
+            setTimeout(() => setSuccessMsg(""), timeout_alert);
+        } catch (err) {
+            alert("Cập nhật thất bại: " + err.message);
+        } finally {
+            setSaving(false);
         }
     };
 
@@ -115,7 +164,7 @@ export function TaskCRUD() {
                                 <th>Description</th>
                                 <th>Done?</th>
                                 <th>Deleted?</th>
-                                <th style={{ width: 160 }}>Actions</th>
+                                <th style={{ width: 220 }}>Actions</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -125,7 +174,13 @@ export function TaskCRUD() {
                                     <td>{r.description}</td>
                                     <td>{Number(r.is_done) ? "Yes" : "No"}</td>
                                     <td>{Number(r.is_deleted) ? "Yes" : "No"}</td>
-                                    <td>
+                                    <td className="d-flex gap-2">
+                                        <button
+                                            className="btn btn-warning btn-sm"
+                                            onClick={() => openEdit(r)}
+                                        >
+                                            Edit
+                                        </button>
                                         <button
                                             className="btn btn-danger btn-sm"
                                             onClick={() => handleDelete(r.id)}
@@ -144,7 +199,7 @@ export function TaskCRUD() {
                         </table>
                     </div>
 
-                    {/* Success alert: ĐẶT Ở ĐÂY, dưới danh sách task */}
+                    {/* Success alert (đặt NGAY DƯỚI danh sách task) */}
                     {successMsg && (
                         <div className="alert alert-success alert-dismissible fade show mt-2" role="alert">
                             {successMsg}
@@ -165,7 +220,7 @@ export function TaskCRUD() {
                 </div>
             </div>
 
-            {/* Modal */}
+            {/* Create Modal */}
             {showCreate && (
                 <>
                     <div className="modal d-block" tabIndex="-1" role="dialog" style={{ background: "rgba(0,0,0,0.3)" }}>
@@ -204,6 +259,66 @@ export function TaskCRUD() {
                                             disabled={creating || !newDesc.trim()}
                                         >
                                             {creating ? "Submitting..." : "Submit"}
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="modal-backdrop show"></div>
+                </>
+            )}
+
+            {/* Edit Modal */}
+            {showEdit && (
+                <>
+                    <div className="modal d-block" tabIndex="-1" role="dialog" style={{ background: "rgba(0,0,0,0.3)" }}>
+                        <div className="modal-dialog">
+                            <div className="modal-content">
+                                <form onSubmit={handleEditSave}>
+                                    <div className="modal-header">
+                                        <h5 className="modal-title">Edit Task #{editForm.id}</h5>
+                                        <button type="button" className="btn-close" onClick={() => setShowEdit(false)} />
+                                    </div>
+                                    <div className="modal-body">
+                                        <div className="mb-3">
+                                            <label className="form-label">Description</label>
+                                            <input
+                                                type="text"
+                                                className="form-control"
+                                                value={editForm.description}
+                                                onChange={(e) => setEditForm(f => ({ ...f, description: e.target.value }))}
+                                                placeholder="Nhập mô tả task..."
+                                                autoFocus
+                                            />
+                                        </div>
+                                        <div className="mb-3">
+                                            <label className="form-label">Is Done?</label>
+                                            <select
+                                                className="form-select"
+                                                value={String(editForm.is_done)}
+                                                onChange={(e) => setEditForm(f => ({ ...f, is_done: Number(e.target.value) }))}
+                                            >
+                                                <option value="0">Không</option>
+                                                <option value="1">Có</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div className="modal-footer">
+                                        <button
+                                            type="button"
+                                            className="btn btn-outline-secondary"
+                                            onClick={() => setShowEdit(false)}
+                                            disabled={saving}
+                                        >
+                                            Cancel
+                                        </button>
+                                        <button
+                                            type="submit"
+                                            className="btn btn-warning"
+                                            disabled={saving || !editForm.description.trim()}
+                                        >
+                                            {saving ? "Saving..." : "Save"}
                                         </button>
                                     </div>
                                 </form>

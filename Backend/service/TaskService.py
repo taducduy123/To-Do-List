@@ -1,4 +1,4 @@
-from Backend.models.Task import Task, TaskCreate
+from Backend.models.Task import Task, TaskCreate, TaskUpdate
 from Backend.repository.TaskRepo import TaskRepo
 
 
@@ -16,7 +16,7 @@ class TaskService:
         return {"id" : f"{result['last_row_id']}"}
 
 
-    def update_task(self, task: Task):
+    def update_task(self, task: TaskUpdate):
         self.__taskRepo.update_task(task)
         return {"id" : f"{task.id}"}
 
