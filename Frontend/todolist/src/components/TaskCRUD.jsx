@@ -4,6 +4,14 @@ export function TaskCRUD() {
     const [records, setRecords] = useState([]);
     const [keyword, setKeyword] = useState("");
 
+    // popup create
+    const [showCreate, setShowCreate] = useState(false);
+    const [newDesc, setNewDesc] = useState("");
+    const [creating, setCreating] = useState(false);
+
+    // success message
+    const [successMsg, setSuccessMsg] = useState("");
+
     // load all
     const loadAll = () => {
         fetch("http://127.0.0.1:8000/api/task")
@@ -25,20 +33,43 @@ export function TaskCRUD() {
             .catch(err => console.log(err));
     };
 
-    // DELETE -> backend sẽ đặt is_deleted = true; frontend cập nhật lại
+    // DELETE
     const handleDelete = (id) => {
         if (!window.confirm(`Xóa task #${id}?`)) return;
-        fetch(`http://127.0.0.1:8000/api/task?id=${id}`, {
-            method: "DELETE"
-        })
+        fetch(`http://127.0.0.1:8000/api/task?id=${id}`, { method: "DELETE" })
             .then(res => {
                 if (!res.ok) throw new Error(`HTTP ${res.status}`);
-                // Cập nhật UI: loại bỏ record vừa xóa
                 setRecords(prev => prev.filter(t => t.id !== id));
-                // hoặc nếu muốn giữ trong state nhưng ẩn đi:
-                // setRecords(prev => prev.map(t => (t.id === id ? { ...t, is_deleted: 1 } : t)));
             })
             .catch(err => alert("Xóa thất bại: " + err.message));
+    };
+
+    // CREATE -> POST { description }, show success (bên dưới bảng)
+    const handleCreateSubmit = async (e) => {
+        e.preventDefault();
+        const desc = newDesc.trim();
+        if (!desc) return;
+        try {
+            setCreating(true);
+            const res = await fetch("http://127.0.0.1:8000/api/task", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ description: desc })
+            });
+            if (!res.ok) throw new Error(`HTTP ${res.status}`);
+
+            setNewDesc("");
+            setShowCreate(false);
+            loadAll();
+
+            // Hiển thị thông báo dưới bảng
+            setSuccessMsg("Tạo mới thành công");
+            setTimeout(() => setSuccessMsg(""), 3000);
+        } catch (err) {
+            alert("Tạo task thất bại: " + err.message);
+        } finally {
+            setCreating(false);
+        }
     };
 
     // chỉ hiển thị chưa bị xóa
@@ -84,7 +115,7 @@ export function TaskCRUD() {
                                 <th>Description</th>
                                 <th>Done?</th>
                                 <th>Deleted?</th>
-                                <th style={{ width: 110 }}>Actions</th>
+                                <th style={{ width: 160 }}>Actions</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -112,12 +143,76 @@ export function TaskCRUD() {
                             </tbody>
                         </table>
                     </div>
+
+                    {/* Success alert: ĐẶT Ở ĐÂY, dưới danh sách task */}
+                    {successMsg && (
+                        <div className="alert alert-success alert-dismissible fade show mt-2" role="alert">
+                            {successMsg}
+                            <button type="button" className="btn-close" onClick={() => setSuccessMsg("")}></button>
+                        </div>
+                    )}
+
+                    {/* Create button */}
+                    <div className="mt-3">
+                        <button className="btn btn-success" onClick={() => setShowCreate(true)}>
+                            + Create new task
+                        </button>
+                    </div>
                 </div>
 
                 <div className="card-footer text-muted">
                     Tổng số hiển thị: <strong>{visible.length}</strong> tasks
                 </div>
             </div>
+
+            {/* Modal */}
+            {showCreate && (
+                <>
+                    <div className="modal d-block" tabIndex="-1" role="dialog" style={{ background: "rgba(0,0,0,0.3)" }}>
+                        <div className="modal-dialog">
+                            <div className="modal-content">
+                                <form onSubmit={handleCreateSubmit}>
+                                    <div className="modal-header">
+                                        <h5 className="modal-title">Create New Task</h5>
+                                        <button type="button" className="btn-close" onClick={() => setShowCreate(false)} />
+                                    </div>
+                                    <div className="modal-body">
+                                        <div className="mb-3">
+                                            <label className="form-label">Description</label>
+                                            <input
+                                                type="text"
+                                                className="form-control"
+                                                value={newDesc}
+                                                onChange={(e) => setNewDesc(e.target.value)}
+                                                placeholder="Nhập mô tả task..."
+                                                autoFocus
+                                            />
+                                        </div>
+                                    </div>
+                                    <div className="modal-footer">
+                                        <button
+                                            type="button"
+                                            className="btn btn-outline-secondary"
+                                            onClick={() => setShowCreate(false)}
+                                            disabled={creating}
+                                        >
+                                            Cancel
+                                        </button>
+                                        <button
+                                            type="submit"
+                                            className="btn btn-success"
+                                            disabled={creating || !newDesc.trim()}
+                                        >
+                                            {creating ? "Submitting..." : "Submit"}
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="modal-backdrop show"></div>
+                </>
+            )}
         </div>
     );
 }
