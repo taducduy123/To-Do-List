@@ -19,12 +19,25 @@ export function TaskCRUD() {
     const [editForm, setEditForm] = useState({ id: null, description: "", is_done: 0 });
     const [saving, setSaving] = useState(false);
 
-    // load all
+    // ----------------- DATA HELPERS -----------------
     const loadAll = () => {
         fetch("http://127.0.0.1:8000/api/task")
             .then(res => res.json())
             .then(data => setRecords(Array.isArray(data) ? data : []))
             .catch(err => console.log(err));
+    };
+
+    // Làm mới theo ngữ cảnh hiện tại (đang search hay không)
+    const refreshView = () => {
+        const q = keyword.trim();
+        if (!q) {
+            loadAll();
+        } else {
+            fetch(`http://127.0.0.1:8000/api/task-search?keyword=${encodeURIComponent(q)}`)
+                .then(res => res.json())
+                .then(data => setRecords(Array.isArray(data) ? data : []))
+                .catch(err => console.log(err));
+        }
     };
 
     useEffect(() => { loadAll(); }, []);
@@ -46,6 +59,7 @@ export function TaskCRUD() {
         fetch(`http://127.0.0.1:8000/api/task?id=${id}`, { method: "DELETE" })
             .then(res => {
                 if (!res.ok) throw new Error(`HTTP ${res.status}`);
+                // Giữ nguyên chế độ xem hiện tại bằng cách cập nhật cục bộ
                 setRecords(prev => prev.filter(t => t.id !== id));
             })
             .catch(err => alert("Xóa thất bại: " + err.message));
@@ -67,7 +81,9 @@ export function TaskCRUD() {
 
             setNewDesc("");
             setShowCreate(false);
-            loadAll();
+
+            // Trước đây: loadAll();  --> đổi sang:
+            refreshView();
 
             setSuccessMsg("Tạo mới thành công");
             setTimeout(() => setSuccessMsg(""), timeout_alert);
@@ -108,7 +124,9 @@ export function TaskCRUD() {
             if (!res.ok) throw new Error(`HTTP ${res.status}`);
 
             setShowEdit(false);
-            loadAll();
+
+            // Trước đây: loadAll();  --> đổi sang:
+            refreshView();
 
             setSuccessMsg("Chỉnh sửa thành công");
             setTimeout(() => setSuccessMsg(""), timeout_alert);
