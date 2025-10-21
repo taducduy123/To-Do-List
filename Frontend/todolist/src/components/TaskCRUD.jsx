@@ -311,8 +311,8 @@ export function TaskCRUD() {
                                                 value={String(editForm.is_done)}
                                                 onChange={(e) => setEditForm(f => ({ ...f, is_done: Number(e.target.value) }))}
                                             >
-                                                <option value="0">Không</option>
-                                                <option value="1">Có</option>
+                                                <option value="0">No</option>
+                                                <option value="1">Yes</option>
                                             </select>
                                         </div>
                                     </div>
