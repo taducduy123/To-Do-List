@@ -3,7 +3,6 @@ import React, {useState, useEffect} from "react";
 export function TaskCRUD() {
     const timeout_alert = 9000;
 
-
     const [records, setRecords] = useState([]);
     const [keyword, setKeyword] = useState("");
 
@@ -52,7 +51,7 @@ export function TaskCRUD() {
             .catch(err => alert("Xóa thất bại: " + err.message));
     };
 
-    // CREATE -> POST { description }, show success (dưới bảng)
+    // CREATE -> POST { description }
     const handleCreateSubmit = async (e) => {
         e.preventDefault();
         const desc = newDesc.trim();
@@ -89,7 +88,7 @@ export function TaskCRUD() {
         setShowEdit(true);
     };
 
-    // SAVE EDIT -> PUT { id, description, is_done } + show "Chỉnh sửa thành công"
+    // SAVE EDIT -> PUT { id, description, is_done }
     const handleEditSave = async (e) => {
         e.preventDefault();
         try {
@@ -111,7 +110,6 @@ export function TaskCRUD() {
             setShowEdit(false);
             loadAll();
 
-            // >>> Hiện thông báo dưới danh sách task
             setSuccessMsg("Chỉnh sửa thành công");
             setTimeout(() => setSuccessMsg(""), timeout_alert);
         } catch (err) {
@@ -128,7 +126,7 @@ export function TaskCRUD() {
         <div className="container py-4">
             <div className="card shadow-sm">
                 <div className="card-header bg-primary text-white">
-                    <h5 className="mb-0">All Tasks</h5>
+                    <h5 className="mb-0 text-center">To Do List</h5>
                 </div>
 
                 <div className="card-body">
@@ -162,8 +160,9 @@ export function TaskCRUD() {
                             <tr>
                                 <th>ID</th>
                                 <th>Description</th>
-                                <th>Done?</th>
-                                <th>Deleted?</th>
+                                {/* Căn giữa header cột Done? */}
+                                <th className="text-center">Done?</th>
+                                {/*<th>Deleted?</th>*/}
                                 <th style={{ width: 220 }}>Actions</th>
                             </tr>
                             </thead>
@@ -172,8 +171,21 @@ export function TaskCRUD() {
                                 <tr key={r.id}>
                                     <td>{r.id}</td>
                                     <td>{r.description}</td>
-                                    <td>{Number(r.is_done) ? "Yes" : "No"}</td>
-                                    <td>{Number(r.is_deleted) ? "Yes" : "No"}</td>
+
+                                    {/* Cột Done? căn giữa, icon thẳng hàng với header */}
+                                    <td className="text-center">
+                                        {Number(r.is_done) ? (
+                                            <span role="img" aria-label="Done" style={{ fontSize: "1.25rem", lineHeight: 1 }}>
+                                                ✅
+                                            </span>
+                                        ) : (
+                                            <span role="img" aria-label="Pending" style={{ fontSize: "1.25rem", lineHeight: 1 }}>
+                                                ⏳
+                                            </span>
+                                        )}
+                                    </td>
+
+                                    {/*<td>{Number(r.is_deleted) ? "Yes" : "No"}</td>*/}
                                     <td className="d-flex gap-2">
                                         <button
                                             className="btn btn-warning btn-sm"
@@ -199,7 +211,7 @@ export function TaskCRUD() {
                         </table>
                     </div>
 
-                    {/* Success alert (đặt NGAY DƯỚI danh sách task) */}
+                    {/* Success alert */}
                     {successMsg && (
                         <div className="alert alert-success alert-dismissible fade show mt-2" role="alert">
                             {successMsg}
@@ -258,7 +270,7 @@ export function TaskCRUD() {
                                             className="btn btn-success"
                                             disabled={creating || !newDesc.trim()}
                                         >
-                                            {creating ? "Submitting..." : "Submit"}
+                                            {creating ? "Creating..." : "Create"}
                                         </button>
                                     </div>
                                 </form>
