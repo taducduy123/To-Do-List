@@ -63,3 +63,25 @@ class TaskRepo:
         """
 
         return self.__db.execute_return_query(sql, (f"%{description}%",))
+
+
+    def get_tasks_pagination(self, limit: int, offset: int):
+        sql = """
+        select *
+        from task
+        where is_deleted = false
+        limit %s 
+        offset %s;
+        """
+
+        return self.__db.execute_return_query(sql, (limit, offset))
+
+
+    def get_total_available_tasks(self):
+        sql = """
+        select count(*) as total
+        from task
+        where is_deleted = false;
+        """
+
+        return self.__db.execute_return_query(sql, ())

@@ -28,3 +28,10 @@ class TaskService:
 
     def search_task_by_description(self, description: str):
         return self.__taskRepo.search_task_by_description(description)
+
+
+    def get_tasks_per_page(self, page_num: int, page_size: int):
+        return self.__taskRepo.get_tasks_pagination(page_size, page_size*(page_num - 1))
+
+    def count_total_available_tasks(self):
+        return self.__taskRepo.get_total_available_tasks()

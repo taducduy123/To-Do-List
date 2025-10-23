@@ -57,3 +57,13 @@ def search_task_by_description(keyword: str):
     print(f"(GET) /api/task-search: {count_number_call_search_task_by_description_api} times")
     return taskService.search_task_by_description(keyword)
 
+
+@router.get("/api/task-pagination")
+def retrieve_task_per_page(page: int, size: int):
+    return taskService.get_tasks_per_page(page, size)
+
+
+@router.get("/api/task-count")
+def count_total_available_tasks():
+    return taskService.count_total_available_tasks()
+
